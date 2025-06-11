@@ -2,8 +2,14 @@
   "buildCommand": "vite build",
   "outputDirectory": "dist",
   "functions": {
-    "api/*.ts": {
-      "runtime": "nodejs18.x"
+    "api/index.ts": {
+      "runtime": "@vercel/node@3.0.7"
+    },
+    "api/test.ts": {
+      "runtime": "@vercel/node@3.0.7"
+    },
+    "api/health.ts": {
+      "runtime": "@vercel/node@3.0.7"
     }
   },
   "routes": [
