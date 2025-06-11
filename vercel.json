@@ -1,20 +1,7 @@
 {
-  "functions": {
-    "api/home.ts": {
-      "includeFiles": "api/index.html"
-    }
-  },
   "routes": [
     {
-      "src": "/",
-      "dest": "/api/home"
-    },
-    {
-      "src": "/api/health",
-      "dest": "/api/health"
-    },
-    {
-      "src": "/api/(.*)",
+      "src": "/(.*)",
       "dest": "/api/index"
     }
   ]
