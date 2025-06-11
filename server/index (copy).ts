@@ -58,19 +58,28 @@ async function initializeApp() {
   return { app, server };
 }
 
-// Initialize the app
-(async () => {
-  const { app, server } = await initializeApp();
+// For Vercel serverless deployment
+if (process.env.VERCEL) {
+  // Export the app for Vercel as default export
+  let app: any = null;
   
-  // For Vercel serverless deployment
-  if (process.env.VERCEL) {
-    module.exports = app;
-    module.exports.default = app;
-  } else {
-    // Local development server
+  module.exports = async (req: any, res: any) => {
+    if (!app) {
+      const { app: expressApp } = await initializeApp();
+      app = expressApp;
+    }
+    return app(req, res);
+  };
+  
+  module.exports.default = module.exports;
+} else {
+  // Local development server
+  (async () => {
+    const { server } = await initializeApp();
+    
     const port = process.env.PORT || 5000;
     server.listen(port, () => {
       log(`serving on port ${port}`);
     });
-  }
-})();
+  })();
+}
