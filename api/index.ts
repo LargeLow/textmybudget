@@ -1,12 +1,23 @@
-export default function handler(req: any, res: any) {
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+
+export default function handler(req: VercelRequest, res: VercelResponse) {
   const { method, url } = req;
   
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  
+  if (method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  
   // Route handling
-  if (url === '/api/health' || url === '/') {
+  if (url === '/api/health' || url === '/' || url === '/api') {
     return res.status(200).json({
       status: "ok",
       timestamp: new Date().toISOString(),
-      environment: process.env.NODE_ENV || "unknown",
+      environment: process.env.NODE_ENV || "production",
       hasDatabase: !!process.env.DATABASE_URL,
       hasSession: !!process.env.SESSION_SECRET,
       version: "1.0.0",
